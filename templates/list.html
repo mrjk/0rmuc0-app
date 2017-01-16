@@ -1,0 +1,18 @@
+<!doctype html>
+<title>Welcome on 0rmuc0!</title>
+<h1>Welcome on 0rmuc0!</h1>
+
+
+
+<p>This is the list of used items:</p>
+<table style="width:100%">
+{% for record in arg_db_dump %}
+  <tr>
+    <th>{{record.username}}</th>
+    <th>{{record.color}}</th>
+    <th>{{record.pet}}</th>
+  </tr>
+{% endfor %}
+
+</table>
+

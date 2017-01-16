@@ -3,15 +3,18 @@
 <h1>Welcome on 0rmuc0!</h1>
 
 
-{% if arg_method == 'POST'  %}
+{% if request.method == 'POST'  %}
   <p>Your form has been submitted :)</p>
+  <p>Username: {{ request.form.username }}</p>
+  <p>Color: {{ request.form.color }}</p>
+  <p>Pet: {{ request.form.pet }}</p>
 {% else %}
   <p>Please enter your data:</p>
 
   <form action="/" method="post">
     Name:
     <br>
-    <input type="text" name="name">
+    <input type="text" name="username">
     <br>
     Favorite color:
     <br>
