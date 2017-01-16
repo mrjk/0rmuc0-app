@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import request
+from flask import render_template
+
 
 app = Flask(__name__)
 
@@ -8,7 +10,8 @@ def page_main():
     if request.method == 'POST':
       return 'You have successfully posted your data!'
     else:
-      return 'The form should appear here!'
+      return render_template('home.html')
+#      return 'The form should appear here!'
 
 @app.route('/list/')
 def page_list():

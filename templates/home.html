@@ -1,0 +1,32 @@
+<!doctype html>
+<title>Welcome on 0rmuc0!</title>
+<h1>Welcome on 0rmuc0!</h1>
+
+
+{% if arg_method == 'POST'  %}
+  <p>Your form has been submitted :)</p>
+{% else %}
+  <p>Please enter your data:</p>
+
+  <form action="/" method="post">
+    Name:
+    <br>
+    <input type="text" name="name">
+    <br>
+    Favorite color:
+    <br>
+    <select name=color>
+      <option value="red">Red</option>
+      <option value="green">Green</option>
+      <option value="blue">Blue</option>
+    </select>
+    <br>
+    Pet:
+    <br>
+    <input type="radio" name="pet" value="cat" checked>Cat<br>
+    <input type="radio" name="pet" value="dog" checked>Dog<br>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+{% endif %}
+
