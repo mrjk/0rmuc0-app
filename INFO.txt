@@ -1,6 +1,12 @@
+# Second run
+This is how to start the 0.5 release:
+./run_debug.sh
+
+Then the application will listen on localhost:5000
+
 # First run
 This is how to start the hello world demo:
-$ export FLASK_APP=hello.py
+$ export FLASK_APP=mainp.y
 $ export FLASK_DEBUG=1
 $ flask run
 
