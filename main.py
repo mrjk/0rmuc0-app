@@ -7,11 +7,8 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def page_main():
-    if request.method == 'POST':
-      return 'You have successfully posted your data!'
-    else:
-      return render_template('home.html')
-#      return 'The form should appear here!'
+#    if request.method == 'POST':
+    return render_template('home.html', arg_method=request.method)
 
 @app.route('/list/')
 def page_list():
@@ -19,5 +16,5 @@ def page_list():
 
 
 @app.route('/list/<string:username>/')
-def page_list_user(username):
-    return 'The record made by the user %s should appear here!' % username
+def page_list_user(username=None):
+    return render_template('list_user.html', arg_username=username)
