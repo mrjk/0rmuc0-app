@@ -1,18 +1,26 @@
-<!doctype html>
-<title>Welcome on 0rmuc0!</title>
-<h1>Welcome on 0rmuc0!</h1>
+{% extends "layout.html" %}
+{% block body %}
 
 
+<div class="panel panel-default">
 
-<p>This is the list of used items:</p>
-<table style="width:100%">
-{% for record in arg_db_dump %}
-  <tr>
-    <th>{{record.username}}</th>
-    <th>{{record.color}}</th>
-    <th>{{record.pet}}</th>
-  </tr>
-{% endfor %}
+  <!-- Table description -->
+  <div class="panel-heading">Panel heading</div>
+  <div class="panel-body">
+    <p>This is the list of used items:</p>
+  </div>
+
+  <!-- Table content -->
+  <table class="table">
+  {% for record in args.records %}
+    <tr>
+      <th>{{record.username}}</th>
+      <th>{{record.color}}</th>
+      <th>{{record.pet}}</th>
+    </tr>
+  {% endfor %}
 
 </table>
 
+<div>
+{% endblock %}

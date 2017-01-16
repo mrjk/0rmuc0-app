@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+
 # Initialisation
 ############################
 from flask import Flask
@@ -32,26 +33,51 @@ app.config.from_envvar('ORMUCO_DEBUG', silent=True)
 ############################
 @app.route('/', methods=['GET', 'POST'])
 def page_main():
+
+
+
+    # If POST, then add data to the DB
     if request.method == 'POST':
       db = get_db()
       db.execute('insert into user_data (username, color, pet) values (?, ?, ?)',
         [request.form['username'], request.form['color'], request.form['pet']]
       )
       db.commit()
-      flash('new entry added!')
-    return render_template('home.html')
+      flash('New entry added for user %s (favorite color is %s and prefered pet is %s)' % ( request.form["username"], request.form["color"], request.form["pet"]))
+
+    # Get a db dump
+    db = get_db()
+    cur = db.execute('select username, color, pet from user_data order by username asc')
+
+    # Build template array
+    args = {}
+    args["page_title"] = "Welcome :)"
+    args["records"] = cur.fetchall()
+
+    # Display template
+    return render_template('home.html', args=args)
+
 
 @app.route('/list/')
 def page_list():
     db = get_db()
-    cur = db.execute('select username, color, pet from user_data order by username desc')
-    db_dump = cur.fetchall()
-    return render_template('list.html', arg_db_dump=db_dump)
+    cur = db.execute('select username, color, pet from user_data order by username asc')
+
+    args = {}
+    args["page_title"] = "Records listing"
+    args["records"] = cur.fetchall()
+
+    return render_template('list.html', args=args)
 
 
 @app.route('/list/<string:username>/')
 def page_list_user(username=None):
-    return render_template('list_user.html', arg_username=username)
+
+    args = {}
+    args["page_title"] = "Data of user " + str(username)
+    args["username"] = username
+
+    return render_template('list_user.html', args=args)
 
 
 # App - Internal
@@ -95,5 +121,9 @@ def init_db():
     with app.open_resource('schema.sql', mode='r') as f:
         db.cursor().executescript(f.read())
     db.commit()
+
+# vim: ts=4 sw=4 et
+
+### v##im##: ##tabstop=4 expandtab shiftwidth=2 softtabstop=2
 
 

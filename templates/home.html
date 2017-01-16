@@ -1,35 +1,67 @@
+{% extends "layout.html" %}
+{% block body %}
+
 <!doctype html>
-<title>Welcome on 0rmuc0!</title>
-<h1>Welcome on 0rmuc0!</h1>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Register a new record</h2>
+  </div>
+  <div class="panel-body">
+    <p>Please enter your data below. You cannot reenter data if you already used your username:</p>
+  
+    <form action="/" method="post">
+  
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-input-name">Name</span>
+        <input class="form-control" placeholder="Username" type="text" name="username" aria-describedby="basic-input-name">
+      </div>
+  
+      <div class="input-group">
+        <p>Favorite color:</p>
+        <select name=color>
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+        </select>
+      </div>
+  
+      <div class="input-group">
+        <p>Favorite pet:</p>
+        <input type="radio" name="pet" value="cat" checked>Cat<br>
+        <input type="radio" name="pet" value="dog" checked>Dog<br>
+      </div>
+  
+      <div class="btn-group" role="group" aria-label="...">
+        <input  class="btn btn-default" type="submit" value="Submit">
+      </div>
+  
+    </form>
+  </div>
+</div>
 
 
-{% if request.method == 'POST'  %}
-  <p>Your form has been submitted :)</p>
-  <p>Username: {{ request.form.username }}</p>
-  <p>Color: {{ request.form.color }}</p>
-  <p>Pet: {{ request.form.pet }}</p>
-{% else %}
-  <p>Please enter your data:</p>
+<div class="panel panel-default">
 
-  <form action="/" method="post">
-    Name:
-    <br>
-    <input type="text" name="username">
-    <br>
-    Favorite color:
-    <br>
-    <select name=color>
-      <option value="red">Red</option>
-      <option value="green">Green</option>
-      <option value="blue">Blue</option>
-    </select>
-    <br>
-    Pet:
-    <br>
-    <input type="radio" name="pet" value="cat" checked>Cat<br>
-    <input type="radio" name="pet" value="dog" checked>Dog<br>
-    <br>
-    <input type="submit" value="Submit">
-  </form>
-{% endif %}
+  <div class="panel-heading">
+    <h2 class="panel-title">Existing records</h2>
+  </div>
+
+  <div class="panel-body">
+    <p>This is the list of registered items:</p>
+  </div>
+
+  <!-- Table content -->
+  <table class="table">
+  {% for record in args.records %}
+    <tr>
+      <th>{{record.username}}</th>
+      <th>{{record.color}}</th>
+      <th>{{record.pet}}</th>
+    </tr>
+  {% endfor %}
+  </table>
+</div>
+
+{% endblock %}
 
