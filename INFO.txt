@@ -1,0 +1,7 @@
+# First run
+This is how to start the hello world demo:
+$ export FLASK_APP=hello.py
+$ export FLASK_DEBUG=1
+$ flask run
+
+
