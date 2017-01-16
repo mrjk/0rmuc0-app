@@ -34,34 +34,39 @@ app.config.from_envvar('ORMUCO_DEBUG', silent=True)
 @app.route('/', methods=['GET', 'POST'])
 def page_main():
 
-
-
-    # If POST, then add data to the DB
-    if request.method == 'POST':
-      db = get_db()
-      db.execute('insert into user_data (username, color, pet) values (?, ?, ?)',
-        [request.form['username'], request.form['color'], request.form['pet']]
-      )
-      db.commit()
-      flash('New entry added for user %s (favorite color is %s and prefered pet is %s)' % ( request.form["username"], request.form["color"], request.form["pet"]))
-
-    # Get a db dump
-    db = get_db()
-    cur = db.execute('select username, color, pet from user_data order by username asc')
-
     # Build template array
     args = {}
-    args["page_title"] = "Welcome :)"
-    args["records"] = cur.fetchall()
+    args["page_title"] = "Add new entry"
+    args["flash_type"] = "success"
+
+    # If POST, then add data to the DB
+    db = get_db()
+    if request.method == 'POST':
+
+      # Check if user is already registered
+      cur = db.execute('select username from user_data where username=?', [ request.form['username']])
+      if len( cur.fetchall() ) > 0:
+        flash('Failed: You already registerd data with your username %s' % ( request.form["username"]))
+        args["flash_type"] = "danger"
+      else:
+        db.execute('insert into user_data (username, color, pet) values (?, ?, ?)',
+          [request.form['username'], request.form['color'], request.form['pet']]
+        )
+        db.commit()
+        flash('Success: New entry added for user %s (favorite color is %s and prefered pet is %s)' % ( request.form["username"], request.form["color"], request.form["pet"]))
+
+    # Get a db dump
+    cur = db.execute('select username, color, pet from user_data order by id desc')
 
     # Display template
+    args["records"] = cur.fetchall()
     return render_template('home.html', args=args)
 
 
 @app.route('/list/')
 def page_list():
     db = get_db()
-    cur = db.execute('select username, color, pet from user_data order by username asc')
+    cur = db.execute('select username, color, pet from user_data order by id desc')
 
     args = {}
     args["page_title"] = "Records listing"

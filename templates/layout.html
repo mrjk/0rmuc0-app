@@ -25,10 +25,16 @@ margin-left:auto ;margin-right:auto
       <span class="navbar-brand">0rmuc0</span>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
       <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
+        <li><a href="/">Register</a></li>
         <li><a href="/list/">List</a></li>
       </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">{{ args.page_title }}</a></li>
+      </ul>
+
     </div>
   </div>
 </nav>
@@ -39,11 +45,8 @@ margin-left:auto ;margin-right:auto
 
   <!-- Flash -->
   {% for message in get_flashed_messages() %}
-    <div class="flash alert alert-success" role="alert">{{ message }}</div>
+    <div class="flash alert alert-{{ args.flash_type }}" role="alert">{{ message }}</div>
   {% endfor %}
-
-  <!-- Page title -->
-  <h2>{{ args.page_title }}</h2>
 
   <!-- Page body -->
   {% block body %}{% endblock %}

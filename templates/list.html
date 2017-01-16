@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
 
-
 <div class="panel panel-default">
 
-  <!-- Table description -->
-  <div class="panel-heading">Panel heading</div>
+  <div class="panel-heading">
+    <h2 class="panel-title">Existing records</h2>
+  </div>
+
   <div class="panel-body">
-    <p>This is the list of used items:</p>
+    <p>This is the list of registered items:</p>
   </div>
 
   <!-- Table content -->
@@ -19,8 +20,8 @@
       <th>{{record.pet}}</th>
     </tr>
   {% endfor %}
+  </table>
 
-</table>
+</div>
 
-<div>
 {% endblock %}

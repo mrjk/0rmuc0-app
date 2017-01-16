@@ -10,57 +10,38 @@
   <div class="panel-body">
     <p>Please enter your data below. You cannot reenter data if you already used your username:</p>
   
-    <form action="/" method="post">
-  
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-input-name">Name</span>
-        <input class="form-control" placeholder="Username" type="text" name="username" aria-describedby="basic-input-name">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form action="/" method="post">
+      
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-input-name">Name</span>
+            <input class="form-control" placeholder="Username" type="text" name="username" aria-describedby="basic-input-name">
+          </div>
+      
+          <div class="input-group">
+            <p>Favorite color:</p>
+            <select name=color>
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+            </select>
+          </div>
+      
+          <div class="input-group">
+            <p>Favorite pet:</p>
+            <input type="radio" name="pet" value="cat" checked>Cat<br>
+            <input type="radio" name="pet" value="dog" checked>Dog<br>
+          </div>
+      
+          <div class="btn-group" role="group" aria-label="...">
+            <input  class="btn btn-default" type="submit" value="Submit">
+          </div>
+      
+        </form>
       </div>
-  
-      <div class="input-group">
-        <p>Favorite color:</p>
-        <select name=color>
-          <option value="red">Red</option>
-          <option value="green">Green</option>
-          <option value="blue">Blue</option>
-        </select>
-      </div>
-  
-      <div class="input-group">
-        <p>Favorite pet:</p>
-        <input type="radio" name="pet" value="cat" checked>Cat<br>
-        <input type="radio" name="pet" value="dog" checked>Dog<br>
-      </div>
-  
-      <div class="btn-group" role="group" aria-label="...">
-        <input  class="btn btn-default" type="submit" value="Submit">
-      </div>
-  
-    </form>
+    </div>
   </div>
-</div>
-
-
-<div class="panel panel-default">
-
-  <div class="panel-heading">
-    <h2 class="panel-title">Existing records</h2>
-  </div>
-
-  <div class="panel-body">
-    <p>This is the list of registered items:</p>
-  </div>
-
-  <!-- Table content -->
-  <table class="table">
-  {% for record in args.records %}
-    <tr>
-      <th>{{record.username}}</th>
-      <th>{{record.color}}</th>
-      <th>{{record.pet}}</th>
-    </tr>
-  {% endfor %}
-  </table>
 </div>
 
 {% endblock %}
