@@ -40,49 +40,27 @@ def page_main():
     args["flash_type"] = "success"
 
     # If POST, then add data to the DB
-    db = get_db()
     if request.method == 'POST':
 
       # Check if user is already registered
-      cur = db.execute('select username from user_data where username=?', [ request.form['username']])
-      if len( cur.fetchall() ) > 0:
-        flash('Failed: You already registerd data with your username %s' % ( request.form["username"]))
-        args["flash_type"] = "danger"
-      else:
-        db.execute('insert into user_data (username, color, pet) values (?, ?, ?)',
-          [request.form['username'], request.form['color'], request.form['pet']]
-        )
-        db.commit()
+      if db_allow_user() :
+        db_register_record(request.form['username'], request.form['color'], request.form['pet'])
         flash('Success: New entry added for user %s (favorite color is %s and prefered pet is %s)' % ( request.form["username"], request.form["color"], request.form["pet"]))
-
-    # Get a db dump
-    cur = db.execute('select username, color, pet from user_data order by id desc')
+      else:
+        args["flash_type"] = "danger"
+        flash('Failed: You already registerd data with your username %s' % ( request.form["username"]))
 
     # Display template
-    args["records"] = cur.fetchall()
+    args["records"] = db_get_dump()
     return render_template('home.html', args=args)
 
 
 @app.route('/list/')
 def page_list():
-    db = get_db()
-    cur = db.execute('select username, color, pet from user_data order by id desc')
-
     args = {}
     args["page_title"] = "Records listing"
-    args["records"] = cur.fetchall()
-
+    args["records"] = db_get_dump()
     return render_template('list.html', args=args)
-
-
-@app.route('/list/<string:username>/')
-def page_list_user(username=None):
-
-    args = {}
-    args["page_title"] = "Data of user " + str(username)
-    args["username"] = username
-
-    return render_template('list_user.html', args=args)
 
 
 # App - Internal
@@ -119,16 +97,38 @@ def get_db():
         g.sqlite_db = connect_db()
     return g.sqlite_db
 
-
 def init_db():
     """This allows to initialise the database."""
     db = get_db()
-    with app.open_resource('schema.sql', mode='r') as f:
+    with app.open_resource('resources/schema.sql', mode='r') as f:
         db.cursor().executescript(f.read())
     db.commit()
 
-# vim: ts=4 sw=4 et
+def db_allow_user():
+    """This should check if the user is already registered"""
 
-### v##im##: ##tabstop=4 expandtab shiftwidth=2 softtabstop=2
+    db = get_db()
+    cur = db.execute('select username from user_data where username=?', [ request.form['username']])
 
+    if len( cur.fetchall() ) > 0:
+      return False
+    else:
+      return True
+
+def db_register_record(username, color, pet):
+    """This function add a new record to sqlite."""
+    db = get_db()
+    db.execute('insert into user_data (username, color, pet) values (?, ?, ?)',
+      [username, color, pet]
+    )
+    db.commit()
+
+def db_get_dump():
+    """This funciton get a dump of the whole database."""
+    db = get_db()
+    cur = db.execute('select username, color, pet from user_data order by id desc')
+    return cur.fetchall()
+
+
+# vim: ts=2 sw=2 et
 
